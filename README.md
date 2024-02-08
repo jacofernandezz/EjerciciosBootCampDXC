@@ -1,7 +1,5 @@
 # Ejercicios para Spring 5 - SpringBoot 2
-
-Para cada ejercicio genera una nueva rama en tu repositorio. <br>
-Por ejemplo, para el ejercicio 1 -> banana-v1
+Cada ejercicio está una rama del repositorio por ejemplo el ejercico 1 -> banana-v1
 
 ## 1. [Spring](./1_Spring)
 ## 2. [SpringBoot](./2_SpringBoot)
