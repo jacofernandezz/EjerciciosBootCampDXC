@@ -1,0 +1,31 @@
+spring:
+  profiles.active: prod
+  application.name: BananaMusic
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/bananamusicdb
+    username: banana
+    password: platano
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+    hibernate:
+      ddl-auto: update
+logging:
+  level.root: INFO
+
+
+---
+spring.profiles: dev
+
+server.port: 9090
+
+
+---
+spring.profiles: prod
+
+server.port: 8080
+
+logging:
+  level.root: WARN
