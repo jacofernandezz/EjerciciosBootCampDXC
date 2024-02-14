@@ -2,6 +2,7 @@ package com.bananaapps.bananamusic.domain.music;
 
 import lombok.*;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -15,15 +16,25 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-
+@Entity
+@Table(name = "tune")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Song {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title, artist;
     private LocalDate releaseDate;
+    @Column(name = "cost")
     private BigDecimal price;
+    @Enumerated(EnumType.STRING)
     private SongCategory songCategory;
     private int version;
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
     private Collection<Backlog> backlogRecords = new ArrayList<Backlog>();
+    @Transient
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public void addBacklogRecord(String location, int quantity) {
         Backlog iv = new Backlog(location, quantity);
@@ -31,9 +42,6 @@ public class Song {
         getBacklogRecords().add(iv);
         iv.setItem(this);
     }
-
-//    @Transient
-    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public Song(Long id) {
         setId(id);

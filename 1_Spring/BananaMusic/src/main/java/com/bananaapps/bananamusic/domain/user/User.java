@@ -9,13 +9,18 @@ import javax.persistence.*;
 @Getter
 @Setter
 @ToString
+@Entity
+@Table(name = "users")
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String email;
 
     private String password;
 
+    @Enumerated(EnumType.STRING)
     private ERole role;
 
     public User(Integer id) {

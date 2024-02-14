@@ -1,18 +1,26 @@
 package com.bananaapps.bananamusic.persistence.music;
 
+import com.bananaapps.bananamusic.config.SpringConfig;
 import com.bananaapps.bananamusic.domain.music.Backlog;
 import com.bananaapps.bananamusic.domain.music.Song;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import java.util.Collection;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = {SpringConfig.class})
+@ActiveProfiles("prod")
 public class SongRelationshipTest {
 
     @Autowired
@@ -21,7 +29,7 @@ public class SongRelationshipTest {
     @Autowired
     private PlatformTransactionManager transactionManager;
 
-    // @Test
+    @Test
     public void testBacklogAccessPositive() {
         DefaultTransactionDefinition definition = new DefaultTransactionDefinition();
         TransactionStatus transaction = transactionManager.getTransaction(definition);
@@ -41,12 +49,15 @@ public class SongRelationshipTest {
         transactionManager.commit(transaction);
     }
 
+    //Este test, en un contexto donde los datos se persisten, solo devolverá el resultado esperado la primera vez que se ejecuta,
+    //así que se anota con Transactional para que realice un rollback desde de su ejecución
     @Test
+    @Transactional
     public void testBacklogAddPositive() {
         DefaultTransactionDefinition definition = new DefaultTransactionDefinition();
         TransactionStatus transaction = transactionManager.getTransaction(definition);
 
-        Song song = repo.findOne(5L);
+        Song song = repo.findOne(4L);
         assertTrue(song.getBacklogRecords().isEmpty(), "This song should not have inventory records");
 
         song.addBacklogRecord("Austin", 22);
@@ -54,7 +65,7 @@ public class SongRelationshipTest {
         transactionManager.commit(transaction);
         transaction = transactionManager.getTransaction(definition);
 
-        song = repo.findOne(5L);
+        song = repo.findOne(4L);
         Collection<Backlog> inventoryRecords = song.getBacklogRecords();
         assertTrue(inventoryRecords.size() == 1, "Should be one inventory record");
 

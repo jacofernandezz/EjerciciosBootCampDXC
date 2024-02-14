@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 
 import com.bananaapps.bananamusic.domain.music.SongCategory;
 import com.bananaapps.bananamusic.domain.music.Song;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
 
 public class InMemorySongRepository implements SongRepository {
 
@@ -79,7 +81,7 @@ public class InMemorySongRepository implements SongRepository {
 
     @Override
     public Song save(Song song) {
-        song.setId(new Random().nextLong());
+        song.setId(Math.abs(new Random().nextLong()));
         catalogData.add(song);
         return song;
     }

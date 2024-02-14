@@ -1,9 +1,15 @@
 package com.bananaapps.bananamusic.persistence.music;
 
+import com.bananaapps.bananamusic.config.SpringConfig;
 import com.bananaapps.bananamusic.domain.music.Song;
 import com.bananaapps.bananamusic.domain.music.SongCategory;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Collection;
@@ -13,7 +19,9 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 
-
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = {SpringConfig.class})
+@ActiveProfiles("prod")
 class SongRepositoryTest {
     @Autowired
     SongRepository repo;
@@ -45,16 +53,17 @@ class SongRepositoryTest {
     void given_invalidKeyword_When_findByKeyword_Then_null() {
         String keyword = "axx";
         Collection<Song> songs = repo.findByKeyword(keyword);
-        assertThat(songs, nullValue());
+        assertThat(songs, empty());
         assertThat(songs.size(), equalTo(0));
     }
 
     @Test
+    @Transactional
     void given_validSong_When_save_Then_Ok() {
         Song newSong = new Song("Mamma mia", "ABBA", "1999-04-30", new BigDecimal(18.0), SongCategory.POP);
 
         Song savedSong = repo.save(newSong);
-        assertThat(savedSong, empty());
+        assertThat(savedSong, notNullValue());
         assertThat(savedSong.getId(), greaterThan(0L));
     }
     

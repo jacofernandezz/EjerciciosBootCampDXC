@@ -40,6 +40,9 @@ public class CatalogImpl implements Catalog {
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public void save(Song song) {
+        if( song==null ) {
+            throw new IllegalArgumentException("event with null entity");
+        }
         songRepository.save(song);
     }
 
@@ -47,6 +50,9 @@ public class CatalogImpl implements Catalog {
     @Transactional(propagation = Propagation.REQUIRED)
     public void saveCollection(Collection<Song> songs) {
         for (Song aSong : songs) {
+            if(aSong == null){
+                throw new IllegalArgumentException("event with null entity");
+            }
             System.out.println("Attempting to save " + aSong);
             songRepository.save(aSong);
         }

@@ -3,13 +3,14 @@ package com.bananaapps.bananamusic.service.music;
 import com.bananaapps.bananamusic.domain.music.PurchaseOrder;
 import com.bananaapps.bananamusic.domain.music.PurchaseOrderLineSong;
 import com.bananaapps.bananamusic.domain.user.User;
+import com.bananaapps.bananamusic.exception.ProductNotFoundException;
 import com.bananaapps.bananamusic.exception.SongNotfoundException;
 import com.bananaapps.bananamusic.exception.UserNotfoundException;
 import com.bananaapps.bananamusic.persistence.UserRepository;
-import com.bananaapps.bananamusic.persistence.music.JpaPurchaseOrderRepository;
 import com.bananaapps.bananamusic.persistence.music.PurchaseOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -47,14 +48,18 @@ public class ShoppingCartImpl implements ShoppingCart {
 
     @Override
     public void removeItem(Long item) throws SongNotfoundException {
+        boolean found = false;
 
         for (PurchaseOrderLineSong aItem : items) {
             if (aItem.getLineNumber() == item) {
                 items.remove(aItem);
+                found = true;
                 break;
             }
         }
-        throw new SongNotfoundException();
+        if (!found) {
+            throw new SongNotfoundException();
+        }
     }
 
     @Override
@@ -68,13 +73,12 @@ public class ShoppingCartImpl implements ShoppingCart {
     }
 
     @Override
+    @Transactional
     public void buy() {
 
         try {
             // simulated user. Must exist in ddbb
-            User currentUser = userRepo.findByEmailAndPassword("juan@j.com", "jjjj").orElseThrow(() -> {
-                throw new UserNotfoundException();
-            });
+            User currentUser = userRepo.findByEmailAndPassword("juan@j.com", "jjjj").orElseThrow(UserNotfoundException::new);
 
             PurchaseOrder purchase = new PurchaseOrder(null, 1, LocalDate.of(2024, 1, 28), currentUser, items);
 
@@ -82,14 +86,13 @@ public class ShoppingCartImpl implements ShoppingCart {
                 item.setOrder(purchase);
             }
 
-            if(purchase.isValid()) {
+            if (purchase.isValid()) {
                 orderRepo.save(purchase);
                 empty();
-            }
-            else throw new RuntimeException("No valid");
+            } else throw new RuntimeException("No valid");
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException(e);
+            throw new ProductNotFoundException();
         }
     }
 

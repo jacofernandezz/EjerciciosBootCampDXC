@@ -4,12 +4,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <!-- TODO: SPRING BOOT PARENT -->
-    <!--<parent>
+    <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.7.4</version>
-        <relativePath/> &lt;!&ndash; lookup parent from repository &ndash;&gt;
-    </parent>-->
+        <relativePath/>
+    </parent>
 
     <groupId>com.bananaapps</groupId>
     <artifactId>BananaMusic1</artifactId>
@@ -23,20 +23,20 @@
 
     <dependencies>
         <!-- TODO: SPRING BOOT DEPENDENCIES -->
-        <!--<dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>-->
-        <!-- <dependency>
+        </dependency>
+         <dependency>
              <groupId>mysql</groupId>
              <artifactId>mysql-connector-java</artifactId>
              <version>8.0.33</version>
-         </dependency>-->
-        <!--<dependency>
+         </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
-        </dependency>-->
+        </dependency>
         <!--<dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
@@ -45,15 +45,9 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <optional>true</optional>
+            <version>1.18.30</version>
+            <scope>provided</scope>
         </dependency>
-
-        <!-- TODO: MYSQL DRIVER -->
-        <!--<dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.33</version>
-        </dependency>-->
 
     </dependencies>
 

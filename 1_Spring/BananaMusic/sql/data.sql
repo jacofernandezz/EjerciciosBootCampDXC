@@ -25,21 +25,24 @@ INSERT INTO `downloadable_item` (`file_type`, `url`, `tune_id`) VALUES
 ('MP3','http://www.bananamusic.com/music/download/CD501.mp3',1),
 ('WMA', 'http://www.bananamusic.com/music/download/CD505.wma', 5);
 
-INSERT INTO `inventory` (`tune_id`, `location`, `quantity`, `version`) VALUES
-(1, 'Piscataway', 10, 1),
-(1, 'Dallas', 25, 1),
-(1, 'New York', 50, 1),
-(1, 'St. Louis', 15, 1),
-(1, 'Santa Clara', 30, 1),
+INSERT INTO `inventory` (`id`, `location`, `quantity`, `version`) values
+(1, 'Houston', 20, 1),
+(2, 'Dallas', 25, 1),
+(3, 'New York', 50, 1),
+(4, 'St. Louis', 15, 1),
+(5, 'Santa Clara', 30, 1),
+(6, 'New York', 10, 1),
 (7, 'New York', 10, 1),
-(8, 'New York', 10, 1),
-(9, 'Edwardsville', 10, 1);
+(8, 'Edwardsville', 10, 1);
+
+INSERT INTO inventory (location, quantity, version, song_id) values
+('Madrid', 60, 1, 1);
 
 INSERT INTO `users` (`email`, `password`, `role`) VALUES
 ('juan@j.com', 'jjjj', 'USER');
 
 INSERT INTO `purchase_order` (`order_date`, `status`, `user_id`, `valid`) VALUES
-('2024-01-28', 1, 1, '1');
+('2024-01-28', 1, 1, 1);
 
-INSERT INTO `purchase_order_line_song` (`quantity`, `unit_price`, `order_id`, `song_id`) VALUES
+INSERT INTO `purchase_order_line_song` (`quantity`, `unit_price`, `purchase_order_id`, `song_id`) VALUES
 (1, 10, 1, 1);
