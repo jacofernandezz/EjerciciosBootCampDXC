@@ -3,6 +3,7 @@ package com.bananaapps.bananamusic.service.music;
 import com.bananaapps.bananamusic.domain.music.PurchaseOrder;
 import com.bananaapps.bananamusic.domain.music.PurchaseOrderLineSong;
 import com.bananaapps.bananamusic.domain.user.User;
+import com.bananaapps.bananamusic.exception.InsufficientInventory;
 import com.bananaapps.bananamusic.exception.ProductNotFoundException;
 import com.bananaapps.bananamusic.exception.SongNotfoundException;
 import com.bananaapps.bananamusic.exception.UserNotfoundException;
@@ -73,7 +74,6 @@ public class ShoppingCartImpl implements ShoppingCart {
     }
 
     @Override
-    @Transactional
     public void buy() {
 
         try {

@@ -38,11 +38,11 @@ public class CatalogImpl implements Catalog {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public void save(Song song) {
+    public Song save(Song song) {
         if( song==null ) {
             throw new IllegalArgumentException("event with null entity");
         }
-        songRepository.save(song);
+        return songRepository.save(song);
     }
 
     @Override

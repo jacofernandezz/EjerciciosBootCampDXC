@@ -1,8 +1,15 @@
 package com.bananaapps.bananamusic.domain.music;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.PositiveOrZero;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.bind.annotation.XmlTransient;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -19,21 +26,32 @@ import java.util.Objects;
 @Entity
 @Table(name = "tune")
 @Inheritance(strategy = InheritanceType.JOINED)
+@XmlRootElement
+@XmlSeeAlso({OfflineSong.class})
 public class Song {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Min(1)
     private Long id;
+    @NotBlank
     private String title, artist;
     private LocalDate releaseDate;
     @Column(name = "cost")
+    @PositiveOrZero
     private BigDecimal price;
     @Enumerated(EnumType.STRING)
     private SongCategory songCategory;
+    @Version
+    @PositiveOrZero
     private int version;
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     @ToString.Exclude
+    @XmlTransient
     private Collection<Backlog> backlogRecords = new ArrayList<Backlog>();
     @Transient
+    @JsonIgnore
+    @XmlTransient
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public void addBacklogRecord(String location, int quantity) {
