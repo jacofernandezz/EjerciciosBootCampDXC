@@ -3,8 +3,14 @@ package com.bananaapps.bananamusic.persistence.music;
 import com.bananaapps.bananamusic.domain.music.Song;
 import com.bananaapps.bananamusic.domain.music.SongCategory;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEntityManager;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
@@ -14,7 +20,11 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-@SpringBootTest
+@ExtendWith(SpringExtension.class)
+@DataJpaTest
+@AutoConfigureTestEntityManager
+@ComponentScan("com.bananaapps.bananamusic.persistence.music")
+@ActiveProfiles("dev")
 class SongRepositoryTest {
     @Autowired
     SongRepository repo;
